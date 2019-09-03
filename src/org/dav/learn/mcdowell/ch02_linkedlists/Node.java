@@ -10,7 +10,7 @@ public class Node
 		data = d;
 	}
 
-	public void appendToTail(int d)
+	public Node appendToTail(int d)
 	{
 		Node end = new Node(d);
 		Node n = this;
@@ -19,6 +19,8 @@ public class Node
 			n = n.next;
 
 		n.next = end;
+
+		return end;
 	}
 
 	@Override

@@ -8,8 +8,34 @@ public class Main
 		//testKthElementToLast();
 		//testDeletion();
 		//testPartition();
+		//testSum();
+		//testLoop();
 
-		testSum();
+		testPalindrome();
+	}
+
+	static void testPalindrome() {
+		Node a = new Node(0);
+		a.appendToTail(1);
+		a.appendToTail(2);
+		a.appendToTail(1);
+		a.appendToTail(0);
+
+		System.out.println(a);
+		System.out.println(Util.isPalindrome(a));
+		System.out.println(Util.isPalindromeR2(a));
+	}
+
+	static void testLoop() {
+		Node a = new Node(1);
+		Node b = a.appendToTail(2);
+		Node c = a.appendToTail(3);
+		Node d = a.appendToTail(4);
+		d.next = a;
+
+		System.out.println(Util.findBeginning(a).data);
+		System.out.println(Util.getFirstInLinkedListLoop(a).data);
+		System.out.println(Util.isLinkedListLooped(a));
 	}
 
 	static void testSum() {

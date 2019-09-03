@@ -1,9 +1,167 @@
 package org.dav.learn.mcdowell.ch02_linkedlists;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.Stack;
 
 public class Util
 {
+	public static boolean isPalindromeR3(Node head) {
+		Result p = isPalindromeRecurse(head, listSize(head));
+		return p.result;
+	}
+
+	private static Result isPalindromeRecurse(Node head, int length) {
+		if (head == null || length == 0)
+			return new Result(null, true);
+		else if (length == 1)
+			return new Result(head.next, true);
+		else if (length == 2)
+			return new Result(head.next.next, head.data == head.next.data);
+
+		Result res = isPalindromeRecurse(head.next, length - 2);
+		if (!res.result || res.node == null)
+			return res;
+		else {
+			res.result = head.data == res.node.data;
+			res.node = res.node.next;
+			return res;
+		}
+	}
+
+	private static int listSize(Node head) {
+		int i = 0;
+
+		while (head != null) {
+			i++;
+			head = head.next;
+		}
+
+		return i;
+	}
+
+	public static boolean isPalindromeR2(Node head) {
+		Node fast = head;
+		Node slow = head;
+
+		Stack<Integer> stack = new Stack<>();
+
+		while (fast != null && fast.next != null) {
+			stack.push(slow.data);
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		if (fast != null)
+			slow = slow.next;
+
+		while (slow != null) {
+			int top = stack.pop().intValue();
+
+			if (top != slow.data)
+				return false;
+
+			slow = slow.next;
+		}
+
+		return true;
+	}
+
+	public static boolean isPalindrome(Node head) {
+		Node first = head;
+		Node mirror = null;
+		int i = 0;
+		while (first != null) {
+			i++;
+
+			Node node = new Node(first.data);
+			node.next = mirror;
+			mirror = node;
+
+			first = first.next;
+		}
+
+		if (mirror == null)
+			return false;
+
+		i = i / 2;
+
+		for (int j = 0; j <= i; j++) {
+			if (mirror.data != head.data)
+				return false;
+
+			head = head.next;
+			mirror = mirror.next;
+		}
+
+		return true;
+	}
+
+	public static Node findBeginning(Node head) {
+		Node slow = head;
+		Node fast = head;
+
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+
+			if (slow == fast)
+				break;
+		}
+
+		if (fast == null || fast.next == null)
+			return null;
+
+		slow = head;
+		while (slow != fast) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+
+		return fast;
+	}
+
+	public static boolean isLinkedListLooped(Node head) {
+		if (head == null || head.next == null)
+			return false;
+
+		Node first = head;
+		Node second = head.next;
+
+		while (first != null || second != null) {
+			if (first == second)
+				return true;
+
+			if (second.next == null)
+				return false;
+			else {
+				first = first.next;
+				second = second.next.next;
+			}
+		}
+
+		return false;
+	}
+
+	public static Node getFirstInLinkedListLoop(Node head) {
+		if (head == null || head.next == null)
+			return null;
+
+		Map<Node, Integer> nodesMap = new HashMap<>();
+
+		while (head != null) {
+			if (nodesMap.containsKey(head))
+				return head;
+			else
+				nodesMap.put(head, 1);
+
+			head = head.next;
+		}
+
+		return null;
+	}
+
 	public static Node addLists(Node l1, Node l2) {
 		int len1 = length(l1);
 		int len2 = length(l2);
