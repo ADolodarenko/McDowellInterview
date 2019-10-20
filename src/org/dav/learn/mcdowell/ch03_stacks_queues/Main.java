@@ -2,7 +2,31 @@ package org.dav.learn.mcdowell.ch03_stacks_queues;
 
 public class Main {
 	public static void main(String[] args) {
-		testStacksBasedQueue();
+		testStackSorting();
+	}
+
+	static void testStackSorting() {
+		Stack<Integer> unsortedStack = new Stack<>();
+		unsortedStack.push(22);
+		unsortedStack.push(1);
+		unsortedStack.push(-7);
+		unsortedStack.push(127);
+		unsortedStack.push(34);
+		printStackOfIntegers(unsortedStack);
+
+		printStackOfIntegers(Util.sort(unsortedStack));
+	}
+
+	static void printStackOfIntegers(Stack<Integer> stack) {
+		Node<Integer> node = stack.top;
+
+		while (node != null) {
+			System.out.print(node.data + ", ");
+
+			node = node.next;
+		}
+
+		System.out.println();
 	}
 
 	static void testStacksBasedQueue() {

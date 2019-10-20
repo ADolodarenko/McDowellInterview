@@ -6,7 +6,7 @@ public class Stack<T> {
 	int size;
 
 	public Stack() {
-		capacity = 10;
+		capacity = 1000;
 	}
 
 	public Stack(int capacity) {
