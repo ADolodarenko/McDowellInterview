@@ -1,10 +1,47 @@
 package org.dav.learn.mcdowell.ch04_trees_graphs;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Util {
+	private static int lastPrinted = Integer.MIN_VALUE;
 
+	public static boolean checkBSTAlt(TreeNode n) {
+		return checkBSTAlt(n, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
+
+	private static boolean checkBSTAlt(TreeNode n, int min, int max) {
+		if (n == null)
+			return true;
+
+		if (n.getData() <= min || n.getData() > max)
+			return false;
+
+		if (!checkBSTAlt(n.left, min, n.getData()) || !checkBSTAlt(n.right, n.getData(), max))
+			return false;
+
+		return true;
+	}
+
+	public static boolean checkBST(TreeNode n) {
+		if (n == null)
+			return true;
+
+		if (!checkBST(n.left))
+			return false;
+
+		if (n.getData() < lastPrinted)
+			return false;
+		lastPrinted = n.getData();
+
+		if (checkBST(n.right))
+			return false;
+
+		return true;
+	}
+
+	//This variant won't do.
 	public static boolean isBinarySearchTree(TreeNode root) {
 		if (root == null)
 			return false;
@@ -30,6 +67,53 @@ public class Util {
 		}
 
 		return true;
+	}
+
+	public static ArrayList<LinkedList<TreeNode>> createLevelLinkedListAlt(TreeNode root) {
+		ArrayList<LinkedList<TreeNode>> result = new ArrayList<>();
+
+		LinkedList<TreeNode> current = new LinkedList<>();
+		if (root != null)
+			current.add(root);
+
+		while (current.size() > 0) {
+			result.add(current);
+			LinkedList<TreeNode> parents = current;
+			current = new LinkedList<>();
+
+			for (TreeNode parent : parents) {
+				if (parent.left != null)
+					current.add(parent.left);
+
+				if (parent.right != null)
+					current.add(parent.right);
+			}
+		}
+
+		return result;
+	}
+
+	public static ArrayList<LinkedList<TreeNode>> createLevelLinkedList(TreeNode root) {
+		ArrayList<LinkedList<TreeNode>> lists = new ArrayList<>();
+		createLevelLinkedList(root, lists, 0);
+		return lists;
+	}
+
+	private static void createLevelLinkedList(TreeNode root, ArrayList<LinkedList<TreeNode>> lists, int level) {
+		if (root == null)
+			return;
+
+		LinkedList<TreeNode> list = null;
+		if (lists.size() == level) {
+			list = new LinkedList<>();
+			lists.add(list);
+		} else
+			list = lists.get(level);
+
+		list.add(root);
+
+		createLevelLinkedList(root.left, lists, level + 1);
+		createLevelLinkedList(root.right, lists, level + 1);
 	}
 
 	public static TreeNode createMinimalBST(int sortedArray[]) {
