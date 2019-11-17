@@ -1,8 +1,36 @@
 package org.dav.learn.mcdowell.ch04_trees_graphs;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Util {
+
+	public static boolean isBinarySearchTree(TreeNode root) {
+		if (root == null)
+			return false;
+
+		Queue<TreeNode> nodes = new LinkedList<>();
+		nodes.add(root);
+
+		while (!nodes.isEmpty()) {
+			TreeNode node = nodes.remove();
+
+			TreeNode child = node.left;
+			if (child != null)
+				if (child.getData() > node.getData())
+					return false;
+
+			child = node.right;
+			if (child != null)
+				if (child.getData() <= node.getData())
+					return false;
+
+			nodes.add(node.left);
+			nodes.add(node.right);
+		}
+
+		return true;
+	}
 
 	public static TreeNode createMinimalBST(int sortedArray[]) {
 		return createMinimalBST(sortedArray, 0, sortedArray.length - 1);
